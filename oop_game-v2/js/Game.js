@@ -19,6 +19,21 @@ class Game {
     };
 
     startGame() {
+        const ul = document.querySelector('#phrase ul');
+        const keys = document.querySelectorAll('.key');
+        const tries = document.querySelectorAll('.tries');
+
+        this.missed = 0;
+        ul.innerHTML = '';
+        keys.forEach(key => {
+            key.className = 'key'
+            key.disabled = false;
+        });
+
+        for (let i=0; i<tries.length; i++) {
+            tries[i].innerHTML = '<img src="images/liveHeart.png" alt="Heart Icon" height="35" width="30"></img>';
+        };
+        
         const overlay = document.getElementById('overlay');
         overlay.style.display = 'none';
 
@@ -70,23 +85,9 @@ class Game {
     };
 
     gameOver(check) {
+        const message = document.getElementById('game-over-message');
         overlay.style.display = 'block';
         overlay.classList.remove('start');
-
-        const message = document.getElementById('game-over-message');
-        const ul = document.querySelector('#phrase ul');
-        const keys = document.querySelectorAll('.key');
-        const tries = document.querySelectorAll('.tries');
-
-        ul.innerHTML = '';
-        keys.forEach(key => {
-            key.className = 'key'
-            key.disabled = false;
-        });
-
-        for (let i=0; i<tries.length; i++) {
-            tries[i].innerHTML = '<img src="images/liveHeart.png" alt="Heart Icon" height="35" width="30"></img>';
-        };
         
         if (check === 'win') {
             overlay.classList.add('win');
