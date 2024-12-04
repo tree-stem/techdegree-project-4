@@ -2,8 +2,6 @@
  * Project 4 - OOP Game App
  * Game.js */
 
-import { Phrase } from './Phrase.js';
-
 class Game {
     constructor() {
         this.missed = 0;
@@ -18,7 +16,7 @@ class Game {
         console.log('Random phrase:', this.activePhrase);
 
         return this.activePhrase;
-    }
+    };
 
     startGame() {
         const overlay = document.getElementById('overlay');
@@ -26,40 +24,67 @@ class Game {
 
         this.getRandomPhrase();
         this.activePhrase.addPhraseToDisplay();
-        this.activePhrase.checkLetter();    
-    }
+    };
 
-    handleInteraction() {
-        const keys = document.querySelectorAll('.keyrow .key');
-        const filteredPhrase = this.activePhrase.phrase.split('').filter(character => character !== ' ');
-   
-        keys.forEach(item => {
-            item.addEventListener('click', (e) => {
-                const clickedKey = e.target.textContent.toLowerCase();
-                let match = false;
+    handleInteraction(clickedKey) {
+        const matchedLetters = this.activePhrase.checkLetter(clickedKey);
+        const scoreboard = document.getElementById('scoreboard');
+        const hearts = scoreboard.getElementsByTagName('li');
+        clickedKey.disabled = true;
+        
+        const removeLife = (array) => {
+            this.missed += 1;
 
-                for ( let i = 0; i < filteredPhrase.length; i++ ) {
-                    
-                    match = false;
+            if (this.missed === 5) {
+                gameOver('lose');
+            };
+            
+            for (let i=0; i<array.length; i++) {
+                let html = '<img src="images/lostHeart.png" alt="Heart Icon" height="35" width="30"></img>';
 
-                    if (clickedKey === filteredPhrase[i]) {
-                        item.classList.add('chosen');
-                        this.activePhrase.showMatchedLetter();
-                        item.disabled = true;
-                        match = true;
-                        break;
-                    }; 
-                };
+                if (array[i].innerHTML.includes('images/liveHeart.png')) {
+                    array[i].innerHTML = html;
+                break;    
+                };     
+            };
+        }; 
+        
+        const checkForWin = () => { 
+            const correct = document.querySelectorAll('.show');
+            const phrase = this.activePhrase.phrase.split('');
+            const filteredPhrase = phrase.filter(char => char !== ' ');
 
-                if (!match) {
-                    item.classList.add('wrong');
-                    item.disabled = true;
-                };
-            });
-        });
-    };   
+            if (correct.length === filteredPhrase.length) {
+                return gameOver('win');
+            };
+        };
+
+        const gameOver = (check) => {
+            if (check === 'win') {
+                overlay.style.display = 'block';
+                overlay.classList.remove('start');
+                overlay.classList.add('win');
+                const message = document.getElementById('game-over-message');
+                message.innerHTML = '<h1 id="game-over-message">You Win</h1>';
+            };
+
+            if (check === 'lose') {
+                overlay.style.display = 'block';
+                overlay.classList.remove('start');
+                overlay.classList.add('lose');
+                const message = document.getElementById('game-over-message');
+                message.innerHTML = '<h1 id="game-over-message">You Lose</h1>';
+            };
+        };
+        
+
+        if (this.activePhrase.phrase.includes(clickedKey.textContent)) {
+            clickedKey.classList.add('chosen');
+            this.activePhrase.showMatchedLetter(matchedLetters);
+            checkForWin();
+        } else {
+            clickedKey.classList.add('wrong');
+            removeLife(hearts);
+        };
+    };
 };
-
-const test = new Game;
-test.startGame();
-test.handleInteraction();
