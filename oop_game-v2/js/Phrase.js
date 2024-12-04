@@ -7,8 +7,8 @@ class Phrase {
         this.phrase = phrase.toLowerCase();
     }
 
-    addPhraseToDisplay() {
-        const phraseCharacters = this.phrase.split('');
+    addPhraseToDisplay(phrase) {
+        const phraseCharacters = phrase.split('');
         const ul = document.querySelector('#phrase ul');
         const phraseDiv = document.querySelector('#phrase');
         phraseDiv.style.display = 'block';

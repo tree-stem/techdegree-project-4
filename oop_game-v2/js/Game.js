@@ -23,7 +23,7 @@ class Game {
         overlay.style.display = 'none';
 
         this.getRandomPhrase();
-        this.activePhrase.addPhraseToDisplay();
+        this.activePhrase.addPhraseToDisplay(this.activePhrase.phrase);
     };
 
     handleInteraction(clickedKey) {
@@ -70,19 +70,31 @@ class Game {
     };
 
     gameOver(check) {
+        overlay.style.display = 'block';
+        overlay.classList.remove('start');
+
+        const message = document.getElementById('game-over-message');
+        const ul = document.querySelector('#phrase ul');
+        const keys = document.querySelectorAll('.key');
+        const tries = document.querySelectorAll('.tries');
+
+        ul.innerHTML = '';
+        keys.forEach(key => {
+            key.className = 'key'
+            key.disabled = false;
+        });
+
+        for (let i=0; i<tries.length; i++) {
+            tries[i].innerHTML = '<img src="images/liveHeart.png" alt="Heart Icon" height="35" width="30"></img>';
+        };
+        
         if (check === 'win') {
-            overlay.style.display = 'block';
-            overlay.classList.remove('start');
             overlay.classList.add('win');
-            const message = document.getElementById('game-over-message');
             message.innerHTML = '<h1 id="game-over-message">You Win</h1>';
         };
 
         if (check === 'lose') {
-            overlay.style.display = 'block';
-            overlay.classList.remove('start');
             overlay.classList.add('lose');
-            const message = document.getElementById('game-over-message');
             message.innerHTML = '<h1 id="game-over-message">You Lose</h1>';
         };
     };
