@@ -2,6 +2,7 @@
  * Project 4 - OOP Game App
  * Game.js */
 
+// Created Game class for game initialization and in-game logic
 class Game {
     constructor() {
         this.missed = 0;
@@ -9,6 +10,7 @@ class Game {
         this.activePhrase = null;
     }
 
+    // Selects a random phrase from the phrases array and sets it as the active phrase
     getRandomPhrase() {
         const randomNumber = Math.floor(Math.random() * 5);
         this.activePhrase = this.phrases[randomNumber];
@@ -18,6 +20,7 @@ class Game {
         return this.activePhrase;
     };
 
+    // Starts game by clearing any displayed items, classes, button disables, and missed items
     startGame() {
         const ul = document.querySelector('#phrase ul');
         const keys = document.querySelectorAll('.key');
@@ -44,6 +47,7 @@ class Game {
         this.activePhrase.addPhraseToDisplay(this.activePhrase.phrase);
     };
 
+    // Handles game logic by calling other methods to either reward or punish a player's guesses
     handleInteraction(clickedKey) {
         const matchedLetters = this.activePhrase.checkLetter(clickedKey);
         const hearts = document.querySelectorAll('.tries');
@@ -60,6 +64,7 @@ class Game {
         };
     };
 
+    // Removes a heart from the game display for every wrong guess until the game ends
     removeLife(array) {
         this.missed += 1;
         console.log('Missed:', this.missed);
@@ -79,6 +84,7 @@ class Game {
         };
     }; 
 
+    // Checks if displayed letters match the selected phrase to determine victory
     checkForWin() { 
         const correct = document.querySelectorAll('.show');
         console.log('Correct:', correct.length);
@@ -90,6 +96,7 @@ class Game {
         };
     };
 
+    // Displays game over message and overlay after either a win or loss
     gameOver(check) {
         const message = document.getElementById('game-over-message');
         const overlay = document.getElementById('overlay');

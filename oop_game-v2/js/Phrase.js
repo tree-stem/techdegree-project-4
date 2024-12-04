@@ -2,11 +2,13 @@
  * Project 4 - OOP Game App
  * Game.js */
 
+// Created Phrase class with methods setting the letters to display and checking player guesses
 class Phrase {
     constructor(phrase) {
         this.phrase = phrase.toLowerCase();
     }
 
+    // Displays phrase letters by setting an appropriate class for both letters and spaces
     addPhraseToDisplay(phrase) {
         const phraseCharacters = phrase.split('');
         const ul = document.querySelector('#phrase ul');
@@ -27,6 +29,7 @@ class Phrase {
         });
     };
 
+    // Checks player guesses for each letter clicked
     checkLetter(clickedKey) {
         const lettersOnly = document.querySelectorAll('.letter'); 
         const matchedLetters = [];
@@ -40,6 +43,7 @@ class Phrase {
         return matchedLetters;
     };
     
+    // Shows correctly guessed letters in phrase display
     showMatchedLetter(matchedLetters) {
         matchedLetters.forEach(letter => {
             letter.classList.remove('letter');
