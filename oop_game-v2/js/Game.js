@@ -39,6 +39,7 @@ class Game {
         };
 
         overlay.style.display = 'none';
+        overlay.classList.remove('win', 'lose');
         this.getRandomPhrase();
         this.activePhrase.addPhraseToDisplay(this.activePhrase.phrase);
     };

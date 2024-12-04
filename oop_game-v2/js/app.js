@@ -4,17 +4,19 @@
 
 const startGameButton = document.getElementById('btn__reset');
 
+let game;
+
 startGameButton.addEventListener('click', () => {
-    const game = new Game;
+    game = new Game;
     game.startGame();
+});
 
-    const divQwerty = document.getElementById('qwerty');
+const divQwerty = document.getElementById('qwerty');
 
-    divQwerty.addEventListener('click', (e) => {
-        const clickedKey = e.target.closest('button');
-        
-        if (clickedKey && clickedKey.tagName === 'BUTTON') {
-            game.handleInteraction(clickedKey);
-        };
-    });
+divQwerty.addEventListener('click', (e) => {
+    const clickedKey = e.target.closest('button');
+    
+    if (clickedKey && clickedKey.tagName === 'BUTTON') {
+        game.handleInteraction(clickedKey);
+    };
 });
