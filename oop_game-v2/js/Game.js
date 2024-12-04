@@ -15,7 +15,7 @@ class Game {
         const randomNumber = Math.floor(Math.random() * 5);
         this.activePhrase = this.phrases[randomNumber];
 
-        console.log('Random phrase:', this.activePhrase);
+        console.log('Random phrase:', this.activePhrase.phrase);
 
         return this.activePhrase;
     };
@@ -28,7 +28,6 @@ class Game {
         const overlay = document.getElementById('overlay');
 
         this.missed = 0;
-        console.log('Missed reset:', this.missed);
         
         ul.innerHTML = '';
         
@@ -59,7 +58,6 @@ class Game {
             this.checkForWin();
         } else {
             clickedKey.classList.add('wrong');
-            console.log('Before removeLife:', this.missed);
             this.removeLife(hearts);
         };
     };
@@ -67,14 +65,12 @@ class Game {
     // Removes a heart from the game display for every wrong guess until the game ends
     removeLife(array) {
         this.missed += 1;
-        console.log('Missed:', this.missed);
         
         for (let i=0; i<array.length; i++) {
             let html = '<img src="images/lostHeart.png" alt="Heart Icon" height="35" width="30"></img>';
 
             if (array[i].innerHTML.includes('images/liveHeart.png')) {
                 array[i].innerHTML = html;
-                console.log('Heart updated at index:', i);
                 break;    
             };     
         };
@@ -87,7 +83,6 @@ class Game {
     // Checks if displayed letters match the selected phrase to determine victory
     checkForWin() { 
         const correct = document.querySelectorAll('.show');
-        console.log('Correct:', correct.length);
         const phrase = this.activePhrase.phrase.split('');
         const filteredPhrase = phrase.filter(char => char !== ' ');
 
