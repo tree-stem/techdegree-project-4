@@ -21,30 +21,31 @@ class Game {
     startGame() {
         const ul = document.querySelector('#phrase ul');
         const keys = document.querySelectorAll('.key');
-        const tries = document.querySelectorAll('.tries');
+        const hearts = document.querySelectorAll('.tries');
+        const overlay = document.getElementById('overlay');
 
         this.missed = 0;
+        console.log('Missed reset:', this.missed);
+        
         ul.innerHTML = '';
+        
         keys.forEach(key => {
             key.className = 'key'
             key.disabled = false;
         });
 
-        for (let i=0; i<tries.length; i++) {
-            tries[i].innerHTML = '<img src="images/liveHeart.png" alt="Heart Icon" height="35" width="30"></img>';
+        for ( let i = 0; i < hearts.length; i++ ) {
+            hearts[i].innerHTML = '<img src="images/liveHeart.png" alt="Heart Icon" height="35" width="30"></img>';
         };
-        
-        const overlay = document.getElementById('overlay');
-        overlay.style.display = 'none';
 
+        overlay.style.display = 'none';
         this.getRandomPhrase();
         this.activePhrase.addPhraseToDisplay(this.activePhrase.phrase);
     };
 
     handleInteraction(clickedKey) {
         const matchedLetters = this.activePhrase.checkLetter(clickedKey);
-        const scoreboard = document.getElementById('scoreboard');
-        const hearts = scoreboard.getElementsByTagName('li');
+        const hearts = document.querySelectorAll('.tries');
         clickedKey.disabled = true;
 
         if (this.activePhrase.phrase.includes(clickedKey.textContent)) {
@@ -53,29 +54,33 @@ class Game {
             this.checkForWin();
         } else {
             clickedKey.classList.add('wrong');
+            console.log('Before removeLife:', this.missed);
             this.removeLife(hearts);
         };
     };
 
     removeLife(array) {
         this.missed += 1;
-
-        if (this.missed === 5) {
-            return this.gameOver('lose');
-        };
+        console.log('Missed:', this.missed);
         
         for (let i=0; i<array.length; i++) {
             let html = '<img src="images/lostHeart.png" alt="Heart Icon" height="35" width="30"></img>';
 
             if (array[i].innerHTML.includes('images/liveHeart.png')) {
                 array[i].innerHTML = html;
-            break;    
+                console.log('Heart updated at index:', i);
+                break;    
             };     
+        };
+
+        if (this.missed === 5) {
+            return this.gameOver('lose');
         };
     }; 
 
     checkForWin() { 
         const correct = document.querySelectorAll('.show');
+        console.log('Correct:', correct.length);
         const phrase = this.activePhrase.phrase.split('');
         const filteredPhrase = phrase.filter(char => char !== ' ');
 
@@ -86,6 +91,8 @@ class Game {
 
     gameOver(check) {
         const message = document.getElementById('game-over-message');
+        const overlay = document.getElementById('overlay');
+
         overlay.style.display = 'block';
         overlay.classList.remove('start');
         
