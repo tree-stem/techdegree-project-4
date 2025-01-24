@@ -1,2 +1,2 @@
 # Techdegree Project 4
- Game show app
+ A browser-based word guessing game using JavaScript and Object-Oriented Programming.
